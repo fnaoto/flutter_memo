@@ -5,14 +5,17 @@ ListView cardList(int _count) => ListView(
     );
 
 Card _cardView(int index) => Card(
-      child: Column(children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(10.0),
-          child: ListTile(
-            title: Text("タイトル"),
-            leading: Icon(Icons.message),
-            subtitle: Text("サブタイトル"),
-          ),
-        )
-      ]),
+      child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            print('Card tapped.');
+          },
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: ListTile(
+              title: Text("タイトル"),
+              leading: Icon(Icons.message),
+              subtitle: Text("サブタイトル"),
+            ),
+          )),
     );
