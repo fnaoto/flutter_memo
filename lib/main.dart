@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cards.dart';
+import 'data.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,6 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Future<List<Card>> _initCardList;
 
   void _incrementCounter() {
     setState(() {
@@ -35,12 +37,34 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initCardList = initCardList();
+  }
+
+  Future<List<Card>> initCardList() async {
+    List<Memo> allMemos = await getAllMemos();
+    List<Card> _cardList;
+    allMemos.forEach((Memo memo) {
+      _cardList.add(cardView(memo));
+    });
+    return _cardList;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: cardList(_counter),
+      body: FutureBuilder<List<Card>>(
+        future: _initCardList,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? futureCardList(_counter, initCardList: _initCardList)
+              : cardList(_counter);
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',

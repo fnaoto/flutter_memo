@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memo/data.dart';
+import 'text.dart';
 
-ListView cardList(int _count) => ListView(
-      children: List.generate(_count, (index) => _cardView(index)),
-    );
+Future<ListView> futureCardList(int _count,
+    {Future<List<Card>> initCardList}) async {
+  Memo memo = Memo.fromJson({'id': '$_count', "text": ''});
+  return ListView(
+    children:
+        List.generate(_count, (index) => cardView(memo)) + await initCardList,
+  );
+}
 
-Card _cardView(int index) => Card(
+ListView cardList(int _count) {
+  Memo memo = Memo.fromJson({'id': '$_count', "text": ''});
+  return ListView(
+    children: List.generate(_count, (index) => cardView(memo)),
+  );
+}
+
+Card cardView(Memo memo) => Card(
       child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            print('Card tapped.');
+            print("Card tapped.");
+            getMemo(memo.id);
+          },
+          onTapCancel: () {
+            print("Card tapped canceld.");
+            storeMemo(memo.id, memo.text);
           },
           child: Container(
             margin: EdgeInsets.all(10.0),
-            child: ListTile(
-              title: Text("タイトル"),
-              leading: Icon(Icons.message),
-              subtitle: Text("サブタイトル"),
-            ),
+            child: textField(memo.text),
           )),
     );
