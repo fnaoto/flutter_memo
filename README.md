@@ -13,3 +13,9 @@ $ flutter emulators --launch <emulator id>
 ```
 $ flutter run
 ```
+
+# clean old dependencies
+
+```
+$ flutter clean
+```
