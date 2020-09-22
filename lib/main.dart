@@ -49,7 +49,7 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: createCardListView(_memo.textList),
+        body: createCardGridView(_memo.textList),
         floatingActionButton: FloatingActionButton(
           onPressed: _addMemo,
           tooltip: 'Add memo',

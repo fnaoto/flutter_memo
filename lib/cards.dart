@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-ListView cardListView(List<Card> cardList) {
-  return ListView(
-    children: cardList,
+GridView createCardGridView(List<String> textList) {
+  return GridView.count(
+    crossAxisCount: 2,
+    children: createCardList(textList),
   );
-}
-
-ListView createCardListView(List<String> textList) {
-  return cardListView(createCardList(textList));
 }
 
 List<Card> createCardList(List<String> textList) {
