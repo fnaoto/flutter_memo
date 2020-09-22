@@ -1,50 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Memo {
-  String id;
-  String text;
+List<String> getStringList(String key) {
+  var _memoList = new List<String>();
 
-  Memo(this.id, this.text);
+  SharedPreferences.getInstance().then((prefs) {
+    if (prefs.containsKey(key)) {
+      _memoList = prefs.getStringList(key);
+    } else {
+      debugPrint("Fail to get key: $key");
+    }
+  });
 
-  Memo.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        text = json['text'];
+  print("get memo list: $_memoList");
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'text': text,
-    };
+  return _memoList;
+}
+
+void storeStringList(String key, List<String> value) async {
+  final key = "memo";
+  final prefs = await SharedPreferences.getInstance();
+  final update = await prefs.setStringList(key, value);
+
+  if (!update) {
+    debugPrint("Fail to update key: $key");
   }
 }
 
-Future<List<Memo>> getAllMemos() async {
-  Set<String> allKeys;
-  List<Memo> memoMaps;
+void deleteStringList(String key) async {
+  final key = "memo";
+  final prefs = await SharedPreferences.getInstance();
+  final remove = await prefs.remove(key);
 
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  allKeys = prefs.getKeys();
-  allKeys.forEach((String key) {
-    Memo memo = Memo.fromJson({'id': key, "text": prefs.getString(key)});
-    memoMaps.add(memo);
-  });
-  print("get all keys");
-  return memoMaps;
-}
-
-Future<String> getMemo(String key) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  print("get memo: $key");
-  return prefs.getString(key);
-}
-
-Future storeMemo(String key, String value) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString(key, value);
-  print("update memo: $key");
-}
-
-Future deleteMemo(String key) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.remove(key);
+  if (!remove) {
+    debugPrint("Fail to delete key: $key");
+  }
 }

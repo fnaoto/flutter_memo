@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cards.dart';
-import 'data.dart';
+import 'memo.dart';
+import 'editor.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,64 +13,70 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Memo Page'),
+      home: MyHomeMemoPage(title: 'Memo'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MyHomeMemoPage extends StatefulWidget {
+  MyHomeMemoPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomeMemoPageState createState() => _MyHomeMemoPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  Future<List<Card>> _initCardList;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
+  var _memo = new Memo();
 
   @override
   void initState() {
     super.initState();
-    _initCardList = initCardList();
-  }
-
-  Future<List<Card>> initCardList() async {
-    List<Memo> allMemos = await getAllMemos();
-    List<Card> _cardList;
-    allMemos.forEach((Memo memo) {
-      _cardList.add(cardView(memo));
-    });
-    return _cardList;
+    this._memo.initMemo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: FutureBuilder<List<Card>>(
-        future: _initCardList,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? futureCardList(_counter, initCardList: _initCardList)
-              : cardList(_counter);
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
+    if (_memo.isLoading) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+          ),
+          body: CircularProgressIndicator());
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: createCardListView(_memo.textList),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _addMemo,
+          tooltip: 'Add memo',
+          child: Icon(Icons.add),
+        ),
+      );
+    }
+  }
+
+  void _addMemo() {
+    setState(() {
+      _memo.addMemo("");
+      moveToNextPage(new Editor(_memo.getCurrentMemo(), _onChanged));
+    });
+  }
+
+  void moveToNextPage(Widget widget) {
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return widget;
+      },
+    ));
+  }
+
+  void _onChanged(String text) {
+    setState(() {
+      _memo.updateCurrentMemo(text);
+    });
   }
 }
