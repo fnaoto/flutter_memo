@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'memo.dart';
 
 class Editor extends StatelessWidget {
-  String _currentText;
+  Memo _memo;
   Function _onChanged;
 
-  Editor(this._currentText, this._onChanged);
+  Editor(this._memo, this._onChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,10 @@ class Editor extends StatelessWidget {
       body: new Container(
           padding: const EdgeInsets.all(16.0),
           child: new TextField(
-            controller: TextEditingController(text: _currentText),
+            controller: TextEditingController(text: _memo.getText()),
             style: new TextStyle(color: Colors.black),
             onChanged: (text) {
-              _currentText = text;
-              _onChanged(_currentText);
+              _onChanged(text, _memo);
             },
             autofocus: true,
             maxLines: 1000,
