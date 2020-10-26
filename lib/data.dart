@@ -18,7 +18,6 @@ List<String> getStringList(String key) {
 }
 
 void storeStringList(String key, List<String> value) async {
-  final key = "memo";
   final prefs = await SharedPreferences.getInstance();
   final update = await prefs.setStringList(key, value);
 
