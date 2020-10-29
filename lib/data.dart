@@ -1,24 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List<String> getStringList(String key) {
-  var _memoList = new List<String>();
+List<String> _textList = new List<String>();
 
+List<String> getStringListData(String key) {
+  _getString(key);
+  return _textList;
+}
+
+void _getString(String key) {
   SharedPreferences.getInstance().then((prefs) {
     if (prefs.containsKey(key)) {
-      _memoList = prefs.getStringList(key);
+      _textList = prefs.getStringList(key);
+      debugPrint("Get text list: $_textList");
     } else {
       debugPrint("Fail to get key: $key");
     }
   });
-
-  print("get memo list: $_memoList");
-
-  return _memoList;
 }
 
-void storeStringList(String key, List<String> value) async {
-  final key = "memo";
+void storeStringListData(String key, List<String> value) async {
   final prefs = await SharedPreferences.getInstance();
   final update = await prefs.setStringList(key, value);
 
@@ -27,7 +28,7 @@ void storeStringList(String key, List<String> value) async {
   }
 }
 
-void deleteStringList(String key) async {
+void deleteStringListData(String key) async {
   final key = "memo";
   final prefs = await SharedPreferences.getInstance();
   final remove = await prefs.remove(key);
