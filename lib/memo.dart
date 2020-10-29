@@ -2,32 +2,30 @@ import 'data.dart';
 
 class Memo {
   bool isLoading = true;
-  String text = "";
   int currentIndex = 0;
   String dataKeyName = "memo";
+  List<String> textList = new List<String>();
 
-  Memo({this.isLoading, this.text, this.currentIndex});
-
-  var _textList = new List<String>();
+  Memo({this.isLoading, this.currentIndex});
 
   void initText() {
-    _textList = getStringList(dataKeyName);
-    currentIndex = _textList.length - 1;
+    textList = getStringListData(dataKeyName);
+    currentIndex = textList.length - 1;
     isLoading = false;
   }
 
   void addText(String text) {
-    _textList.add(text);
-    currentIndex = _textList.length - 1;
-    storeStringList(dataKeyName, _textList);
+    textList.add(text);
+    currentIndex = textList.length - 1;
+    storeStringListData(dataKeyName, textList);
   }
 
   String getText() {
-    return _textList[currentIndex];
+    return textList[currentIndex];
   }
 
-  void updateText(String text) {
-    _textList[currentIndex] = text;
-    storeStringList(dataKeyName, _textList);
+  void updateText(String text, int index) {
+    textList[index] = text;
+    storeStringListData(dataKeyName, textList);
   }
 }

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'memo.dart';
 
 class Editor extends StatelessWidget {
-  Memo _memo;
+  String _text;
+  int _currentIndex;
   Function _onChanged;
 
-  Editor(this._memo, this._onChanged);
+  Editor(this._text, this._currentIndex, this._onChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,10 @@ class Editor extends StatelessWidget {
       body: new Container(
           padding: const EdgeInsets.all(16.0),
           child: new TextField(
-            controller: TextEditingController(text: _memo.getText()),
+            controller: TextEditingController(text: _text),
             style: new TextStyle(color: Colors.black),
             onChanged: (text) {
-              _onChanged(text, _memo);
+              _onChanged(text, _currentIndex);
             },
             autofocus: true,
             maxLines: 1000,

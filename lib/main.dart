@@ -29,7 +29,6 @@ class MyHomeMemoPage extends StatefulWidget {
 
 class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
   var _memo = new Memo();
-  var _memoList = new List<Memo>();
 
   @override
   void initState() {
@@ -50,7 +49,7 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: createCardGridView(_memoList, _onTap),
+        body: createCardGridView(_memo, _onTap),
         floatingActionButton: FloatingActionButton(
           onPressed: _addMemo,
           tooltip: 'Add memo',
@@ -62,22 +61,20 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
 
   void _addMemo() {
     setState(() {
-      _memo = new Memo();
-      _memo.initText();
       _memo.addText("");
-      _memoList.add(_memo);
-      moveToNextPage(new Editor(_memo, _onChanged));
+      moveToNextPage(
+          new Editor(_memo.getText(), _memo.currentIndex, _onChanged));
     });
   }
 
-  void _onChanged(String text, Memo memo) {
+  void _onChanged(String text, int index) {
     setState(() {
-      memo.updateText(text);
+      _memo.updateText(text, index);
     });
   }
 
-  void _onTap(Memo memo) {
-    moveToNextPage(new Editor(memo, _onChanged));
+  void _onTap(String text, int index) {
+    moveToNextPage(new Editor(text, index, _onChanged));
   }
 
   void moveToNextPage(Widget widget) {
