@@ -1,23 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'data.dart';
 
 class Memo {
-  bool isLoading = true;
   int currentIndex = 0;
   String dataKeyName = "memo";
   List<String> textList = new List<String>();
+  Data data = new Data();
 
-  Memo({this.isLoading, this.currentIndex});
-
-  void initText() {
-    textList = getStringListData(dataKeyName);
+  Future<void> initText() async {
+    textList = await data.getStringListData(dataKeyName);
     currentIndex = textList.length - 1;
-    isLoading = false;
+    debugPrint("initText: " + textList.toString());
   }
 
   void addText(String text) {
     textList.add(text);
     currentIndex = textList.length - 1;
-    storeStringListData(dataKeyName, textList);
+    data.storeStringListData(dataKeyName, textList);
   }
 
   String getText() {
@@ -26,6 +26,6 @@ class Memo {
 
   void updateText(String text, int index) {
     textList[index] = text;
-    storeStringListData(dataKeyName, textList);
+    data.storeStringListData(dataKeyName, textList);
   }
 }

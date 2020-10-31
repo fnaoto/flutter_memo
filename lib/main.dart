@@ -24,39 +24,39 @@ class MyHomeMemoPage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomeMemoPageState createState() => _MyHomeMemoPageState();
+  State<MyHomeMemoPage> createState() => _MyHomeMemoPageState();
 }
 
 class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
-  var _memo = new Memo();
+  Memo _memo = new Memo();
 
   @override
   void initState() {
     super.initState();
-    this._memo.initText();
+    initMemo();
+  }
+
+  Future<void> initMemo() async {
+    await _memo.initText();
+    setState(() {
+      this.build(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_memo.isLoading) {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          body: CircularProgressIndicator());
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: createCardGridView(_memo, _onTap),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _addMemo,
-          tooltip: 'Add memo',
-          child: Icon(Icons.add),
-        ),
-      );
-    }
+    debugPrint("build");
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: createCardGridView(_memo, _onTap),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addMemo,
+        tooltip: 'Add memo',
+        child: Icon(Icons.add),
+      ),
+    );
   }
 
   void _addMemo() {
