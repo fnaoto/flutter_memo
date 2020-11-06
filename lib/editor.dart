@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'memo.dart';
 
 class Editor extends StatelessWidget {
-  String _text;
-  int _currentIndex;
-  Function _onChanged;
+  final String _text;
+  final int _currentIndex;
+  final Function _onChanged;
 
   Editor(this._text, this._currentIndex, this._onChanged);
 
