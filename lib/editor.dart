@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'memo.dart';
 
 class Editor extends StatelessWidget {
   final String _text;
