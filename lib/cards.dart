@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'memo.dart';
 
-GridView createCardGridView(Memo memo, Function _onTap) {
-  return GridView.count(
-    crossAxisCount: 2,
-    children: createCardList(memo, _onTap),
+StaggeredGridView createCardGridView(Memo memo, Function _onTap) {
+  List<Card> ccl = createCardList(memo, _onTap);
+  return StaggeredGridView.countBuilder(
+    crossAxisCount: 4,
+    itemCount: ccl.length,
+    itemBuilder: (BuildContext context, int index) => ccl[index],
+    staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+    mainAxisSpacing: 1.0,
+    crossAxisSpacing: 1.0,
   );
 }
 
