@@ -17,7 +17,7 @@ class Memo {
   void addText(String text) {
     textList.add(text);
     currentIndex = textList.length - 1;
-    data.storeStringListData(dataKeyName, textList);
+    data.updateStringListData(dataKeyName, textList);
   }
 
   String getText() {
@@ -26,6 +26,11 @@ class Memo {
 
   void updateText(String text, int index) {
     textList[index] = text;
-    data.storeStringListData(dataKeyName, textList);
+    data.updateStringListData(dataKeyName, textList);
+  }
+
+  void deleteText(int index) {
+    textList.removeAt(index);
+    data.updateStringListData(dataKeyName, textList);
   }
 }

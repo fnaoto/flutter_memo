@@ -11,9 +11,9 @@ class Data {
     return textList;
   }
 
-  void storeStringListData(String key, List<String> value) async {
-    final prefs = await SharedPreferences.getInstance();
-    final update = await prefs.setStringList(key, value);
+  void updateStringListData(String key, List<String> value) async {
+    final perfs = await _getInstance();
+    final update = await perfs.setStringList(key, value);
 
     if (!update) {
       debugPrint("Fail to update key: $key");
