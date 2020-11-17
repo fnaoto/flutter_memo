@@ -5,8 +5,9 @@ class Editor extends StatelessWidget {
   final String _text;
   final int _currentIndex;
   final Function _onChanged;
+  final Function _onPressed;
 
-  Editor(this._text, this._currentIndex, this._onChanged);
+  Editor(this._text, this._currentIndex, this._onChanged, this._onPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,11 @@ class Editor extends StatelessWidget {
         title: new Text('Editor'),
         actions: <Widget>[
           FlatButton(
-            onPressed: () => focusOwnWidget(context),
-            child: Icon(Icons.check),
+            onPressed: () {
+              _onPressed(_currentIndex);
+              moveToPreviousPage(context);
+            },
+            child: Icon(Icons.delete),
           ),
         ],
         leading: FlatButton(
