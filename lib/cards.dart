@@ -24,7 +24,7 @@ List<Card> createCardList(Memo memo, Function _onTap) {
           padding: const EdgeInsets.all(16.0),
           child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
-            child: Text(text),
+            child: Text(text, maxLines: 10),
             onTap: () => _onTap(text, index),
           ),
         ),
