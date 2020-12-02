@@ -2,12 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Editor extends StatelessWidget {
-  final String _text;
-  final int _currentIndex;
-  final Function _onChanged;
-  final Function _onPressed;
+  final String text;
+  final int currentIndex;
+  final Function onChangedTextField;
+  final Function onPressedDeleteButton;
+  final Function onPressedPinnedButton;
 
-  Editor(this._text, this._currentIndex, this._onChanged, this._onPressed);
+  Editor(
+      {this.text,
+      this.currentIndex,
+      this.onChangedTextField,
+      this.onPressedDeleteButton,
+      this.onPressedPinnedButton});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +23,17 @@ class Editor extends StatelessWidget {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              _onPressed(_currentIndex);
+              onPressedDeleteButton(currentIndex);
               moveToPreviousPage(context);
             },
             child: Icon(Icons.delete),
+          ),
+          FlatButton(
+            onPressed: () {
+              onPressedPinnedButton(currentIndex);
+              focusOwnWidget(context); //FIXME
+            },
+            child: Icon(Icons.push_pin),
           ),
         ],
         leading: FlatButton(
@@ -31,10 +44,10 @@ class Editor extends StatelessWidget {
       body: new Container(
           padding: const EdgeInsets.all(16.0),
           child: new TextField(
-            controller: TextEditingController(text: _text),
+            controller: TextEditingController(text: text),
             style: new TextStyle(color: Colors.black),
             onChanged: (text) {
-              _onChanged(text, _currentIndex);
+              onChangedTextField(text, currentIndex);
             },
             autofocus: true,
             maxLines: 1000,

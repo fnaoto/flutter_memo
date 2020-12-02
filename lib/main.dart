@@ -63,24 +63,38 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
     setState(() {
       _memo.addText("");
       moveToNextPage(new Editor(
-          _memo.getText(), _memo.currentIndex, _onChanged, _onPressed));
+          text: _memo.getText(),
+          currentIndex: _memo.currentIndex,
+          onChangedTextField: _onChangedTextField,
+          onPressedDeleteButton: _onPressedDeleteButton,
+          onPressedPinnedButton: _onPressedPinnedButton));
     });
   }
 
-  void _onChanged(String text, int index) {
+  void _onChangedTextField(String text, int index) {
     setState(() {
       _memo.updateText(text, index);
     });
   }
 
-  void _onPressed(int index) {
+  void _onPressedDeleteButton(int index) {
     setState(() {
       _memo.deleteText(index);
     });
   }
 
+  void _onPressedPinnedButton(String text, int index) {
+    setState(() {
+      _memo.updateText(text, index);
+    });
+  }
+
   void _onTap(String text, int index) {
-    moveToNextPage(new Editor(text, index, _onChanged, _onPressed));
+    moveToNextPage(new Editor(
+        text: text,
+        currentIndex: index,
+        onChangedTextField: _onChangedTextField,
+        onPressedDeleteButton: _onChangedTextField));
   }
 
   void moveToNextPage(Widget widget) {
