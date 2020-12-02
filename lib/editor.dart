@@ -22,6 +22,7 @@ class Editor extends StatelessWidget {
         title: new Text('Editor'),
         actions: <Widget>[
           FlatButton(
+            minWidth: 1,
             onPressed: () {
               onPressedDeleteButton(currentIndex);
               moveToPreviousPage(context);
@@ -29,9 +30,10 @@ class Editor extends StatelessWidget {
             child: Icon(Icons.delete),
           ),
           FlatButton(
+            minWidth: 1,
             onPressed: () {
               onPressedPinnedButton(currentIndex);
-              focusOwnWidget(context); //FIXME
+              moveToPreviousPage(context);
             },
             child: Icon(Icons.push_pin),
           ),

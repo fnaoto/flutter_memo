@@ -83,10 +83,8 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
     });
   }
 
-  void _onPressedPinnedButton(String text, int index) {
-    setState(() {
-      _memo.updateText(text, index);
-    });
+  void _onPressedPinnedButton(int index) {
+    //FIXME: Add pinned state
   }
 
   void _onTap(String text, int index) {
@@ -94,7 +92,8 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
         text: text,
         currentIndex: index,
         onChangedTextField: _onChangedTextField,
-        onPressedDeleteButton: _onChangedTextField));
+        onPressedDeleteButton: _onPressedDeleteButton,
+        onPressedPinnedButton: _onPressedPinnedButton));
   }
 
   void moveToNextPage(Widget widget) {
