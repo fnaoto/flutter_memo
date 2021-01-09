@@ -50,7 +50,15 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: createCardGridView(_memo, _onTap),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+              child: createCardGridView(_memo.getPinnedMemoList(), _onTap)),
+          Expanded(
+              child: createCardGridView(_memo.getUnPinnedMemoList(), _onTap)),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addMemo,
         tooltip: 'Add memo',
@@ -61,39 +69,43 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
 
   void _addMemo() {
     setState(() {
-      _memo.addText("");
+      _memo.addText(text: "", pin: false);
       moveToNextPage(new Editor(
-          text: _memo.getText(),
-          currentIndex: _memo.currentIndex,
+          text: _memo.getCurrentText(),
+          memo: _memo.getCurrentMemo(),
           onChangedTextField: _onChangedTextField,
           onPressedDeleteButton: _onPressedDeleteButton,
           onPressedPinnedButton: _onPressedPinnedButton));
     });
   }
 
-  void _onChangedTextField(String text, int index) {
+  void _onChangedTextField({String text, MemoModel memo}) {
     setState(() {
-      _memo.updateText(text, index);
+      _memo.updateText(text: text, pin: memo.pin, memo: memo);
     });
   }
 
-  void _onPressedDeleteButton(int index) {
+  void _onPressedDeleteButton(MemoModel memo) {
     setState(() {
-      _memo.deleteText(index);
+      _memo.deleteText(memo);
     });
   }
 
-  void _onPressedPinnedButton(int index) {
-    //FIXME: Add pinned state
+  void _onPressedPinnedButton(MemoModel memo) {
+    setState(() {
+      _memo.updateText(text: memo.text, pin: !memo.pin, memo: memo);
+    });
   }
 
-  void _onTap(String text, int index) {
-    moveToNextPage(new Editor(
-        text: text,
-        currentIndex: index,
-        onChangedTextField: _onChangedTextField,
-        onPressedDeleteButton: _onPressedDeleteButton,
-        onPressedPinnedButton: _onPressedPinnedButton));
+  void _onTap({MemoModel memo}) {
+    setState(() {
+      moveToNextPage(new Editor(
+          text: memo.text,
+          memo: memo,
+          onChangedTextField: _onChangedTextField,
+          onPressedDeleteButton: _onPressedDeleteButton,
+          onPressedPinnedButton: _onPressedPinnedButton));
+    });
   }
 
   void moveToNextPage(Widget widget) {

@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   shared_preferences:
   flutter_staggered_grid_view:
+  split_view:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

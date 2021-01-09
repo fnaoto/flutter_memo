@@ -12,48 +12,71 @@ class MemoModel {
   MemoModel.fromJson(Map<String, dynamic> json)
       : pin = json['pin'],
         text = json['text'];
-
-  Map<String, dynamic> toJson() => {'pin': pin, 'text': text};
-  String toString() => "{'pin': ${this.pin}, 'text': ${this.text}}";
 }
 
 class Memo {
-  int currentIndex = 0;
   String dataKeyName = "memo";
-  List<String> textList = new List<String>();
-  List<MemoModel> memoList = new List<MemoModel>();
+  List<String> _textList = new List<String>();
+  List<MemoModel> _memoList = new List<MemoModel>();
   Data data = new Data();
 
   Future<void> initText() async {
-    textList = await data.getStringListData(dataKeyName);
-    debugPrint("initText: " + textList.toString());
-    for (var text in textList) {
-      memoList.add(new MemoModel.fromJson(json.decode(text)));
+    _textList = await data.getStringListData(dataKeyName);
+    debugPrint("initText: " + _textList.toString());
+    for (var text in _textList) {
+      _memoList.add(new MemoModel.fromJson(json.decode(text)));
     }
-    currentIndex = memoList.length - 1;
   }
 
-  void addText(String text) {
-    MemoModel memo = new MemoModel(pin: false, text: text);
-    memoList.add(memo);
-    textList.add(memo.toString());
-    currentIndex = memoList.length - 1;
-    data.updateStringListData(dataKeyName, textList);
+  void addText({String text, bool pin}) {
+    MemoModel memo = new MemoModel(pin: pin, text: text);
+    _memoList.add(memo);
+    _textList.add(memo.toString());
+    data.updateStringListData(dataKeyName, _textList);
   }
 
-  String getText() {
-    return memoList[currentIndex].text;
+  String getCurrentText() {
+    return _memoList.last.text;
   }
 
-  void updateText(String text, int index) {
-    memoList[index].text = text;
-    textList[index] = memoList[index].toString();
-    data.updateStringListData(dataKeyName, textList);
+  MemoModel getCurrentMemo() {
+    return _memoList.last;
   }
 
-  void deleteText(int index) {
-    textList.removeAt(index);
-    memoList.removeAt(index);
-    data.updateStringListData(dataKeyName, textList);
+  List<MemoModel> getMemoList() {
+    return _memoList;
+  }
+
+  List<MemoModel> getPinnedMemoList() {
+    List<MemoModel> memoList = [];
+    for (var memo in _memoList) {
+      if (memo.pin) memoList.add(memo);
+    }
+    return memoList;
+  }
+
+  List<MemoModel> getUnPinnedMemoList() {
+    List<MemoModel> memoList = [];
+    for (var memo in _memoList) {
+      if (!memo.pin) memoList.add(memo);
+    }
+    return memoList;
+  }
+
+  void updateText({String text, bool pin, MemoModel memo}) {
+    for (int i = 0; i < _memoList.length; i++) {
+      if (_memoList[i].text == memo.text) {
+        _memoList[i].text = text;
+        _memoList[i].pin = pin;
+        _textList[i] = _memoList[i].toString();
+      }
+    }
+    data.updateStringListData(dataKeyName, _textList);
+  }
+
+  void deleteText(MemoModel memo) {
+    _textList.remove(memo.text);
+    _memoList.remove(memo);
+    data.updateStringListData(dataKeyName, _textList);
   }
 }

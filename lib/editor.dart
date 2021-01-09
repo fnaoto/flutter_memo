@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_memo/memo.dart';
 
 class Editor extends StatelessWidget {
   final String text;
-  final int currentIndex;
+  final MemoModel memo;
   final Function onChangedTextField;
   final Function onPressedDeleteButton;
   final Function onPressedPinnedButton;
 
   Editor(
       {this.text,
-      this.currentIndex,
+      this.memo,
       this.onChangedTextField,
       this.onPressedDeleteButton,
       this.onPressedPinnedButton});
@@ -24,7 +25,7 @@ class Editor extends StatelessWidget {
           FlatButton(
             minWidth: 1,
             onPressed: () {
-              onPressedDeleteButton(currentIndex);
+              onPressedDeleteButton(memo);
               moveToPreviousPage(context);
             },
             child: Icon(Icons.delete),
@@ -32,7 +33,7 @@ class Editor extends StatelessWidget {
           FlatButton(
             minWidth: 1,
             onPressed: () {
-              onPressedPinnedButton(currentIndex);
+              onPressedPinnedButton(memo);
               moveToPreviousPage(context);
             },
             child: Icon(Icons.push_pin),
@@ -49,7 +50,7 @@ class Editor extends StatelessWidget {
             controller: TextEditingController(text: text),
             style: new TextStyle(color: Colors.black),
             onChanged: (text) {
-              onChangedTextField(text, currentIndex);
+              onChangedTextField(text: text, memo: memo);
             },
             autofocus: true,
             maxLines: 1000,
