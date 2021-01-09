@@ -2,35 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'data.dart';
 
+class MemoModel {
+  MemoModel({this.pin = false, this.text = ""});
+
+  bool pin;
+  String text;
+}
+
 class Memo {
   int currentIndex = 0;
   String dataKeyName = "memo";
-  List<String> textList = new List<String>();
+  List<MemoModel> memoList = new List<MemoModel>();
   Data data = new Data();
 
   Future<void> initText() async {
-    textList = await data.getStringListData(dataKeyName);
-    currentIndex = textList.length - 1;
-    debugPrint("initText: " + textList.toString());
+    currentIndex = await data.getIntData(dataKeyName);
+    for (int i = 0; i < currentIndex; i++) {
+      memoList[i].text = await data.getStringData(i.toString());
+      memoList[i].pin = await data.getBoolData(i.toString());
+    }
+    debugPrint("initText: " + currentIndex.toString());
   }
 
   void addText(String text) {
-    textList.add(text);
-    currentIndex = textList.length - 1;
-    data.updateStringListData(dataKeyName, textList);
+    memoList.add(MemoModel());
+    currentIndex = memoList.length;
+    memoList[currentIndex].text = text;
+    memoList[currentIndex].pin = false;
+    data.updateStringData(currentIndex.toString(), text);
+    data.updateBoolData(currentIndex.toString(), false);
   }
 
-  String getText() {
-    return textList[currentIndex];
+  List<String> getAllText() {
+    List<String> textList = new List<String>();
+    memoList.forEach((memo) {
+      textList.add(memo.text);
+    });
+    return textList;
   }
 
   void updateText(String text, int index) {
-    textList[index] = text;
-    data.updateStringListData(dataKeyName, textList);
+    memoList[index].text = text;
+    data.updateStringData(index.toString(), text);
   }
 
   void deleteText(int index) {
-    textList.removeAt(index);
-    data.updateStringListData(dataKeyName, textList);
+    memoList.removeAt(index);
+    data.updateIntData(dataKeyName, --currentIndex);
+  }
+
+  void addPin(int index) {
+    memoList[index].pin = true;
+    data.updateBoolData(index.toString(), true);
   }
 }

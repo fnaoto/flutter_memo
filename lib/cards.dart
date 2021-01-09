@@ -17,7 +17,7 @@ StaggeredGridView createCardGridView(Memo memo, Function _onTap) {
 List<Card> createCardList(Memo memo, Function _onTap) {
   var _cardList = new List<Card>();
 
-  memo.textList.asMap().forEach((int index, String text) {
+  memo.getAllText().asMap().forEach((int index, String text) {
     _cardList.add(
       Card(
         child: Padding(

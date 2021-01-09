@@ -11,6 +11,27 @@ class Data {
     return textList;
   }
 
+  Future<String> getStringData(String key) async {
+    var perfs = await _getInstance();
+    var getString = perfs.getString(key);
+    debugPrint("getStringData: " + getString);
+    return getString;
+  }
+
+  Future<int> getIntData(String key) async {
+    var perfs = await _getInstance();
+    var getInt = perfs.getInt(key);
+    debugPrint("getIntData: " + getInt.toString());
+    return getInt;
+  }
+
+  Future<bool> getBoolData(String key) async {
+    var perfs = await _getInstance();
+    var getBool = perfs.getBool(key);
+    debugPrint("getBoolData: " + getBool.toString());
+    return getBool;
+  }
+
   void updateStringListData(String key, List<String> value) async {
     final perfs = await _getInstance();
     final update = await perfs.setStringList(key, value);
@@ -20,8 +41,34 @@ class Data {
     }
   }
 
+  void updateStringData(String key, String value) async {
+    final perfs = await _getInstance();
+    final update = await perfs.setString(key, value);
+
+    if (!update) {
+      debugPrint("Fail to update key: $key");
+    }
+  }
+
+  void updateIntData(String key, int value) async {
+    final perfs = await _getInstance();
+    final update = await perfs.setInt(key, value);
+
+    if (!update) {
+      debugPrint("Fail to update key: $key");
+    }
+  }
+
+  void updateBoolData(String key, bool value) async {
+    final perfs = await _getInstance();
+    final update = await perfs.setBool(key, value);
+
+    if (!update) {
+      debugPrint("Fail to update key: $key");
+    }
+  }
+
   void deleteStringListData(String key) async {
-    final key = "memo";
     final prefs = await SharedPreferences.getInstance();
     final remove = await prefs.remove(key);
 
