@@ -68,7 +68,7 @@ class Data {
     }
   }
 
-  void deleteStringListData(String key) async {
+  void deleteData(String key) async {
     final prefs = await SharedPreferences.getInstance();
     final remove = await prefs.remove(key);
 
