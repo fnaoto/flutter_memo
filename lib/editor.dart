@@ -22,26 +22,26 @@ class Editor extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Editor'),
         actions: <Widget>[
-          FlatButton(
-            minWidth: 1,
-            onPressed: () {
-              onPressedDeleteButton(memo);
-              moveToPreviousPage(context);
-            },
-            child: Icon(Icons.delete),
-          ),
-          FlatButton(
-            minWidth: 1,
+          ElevatedButton.icon(
+              onPressed: () {
+                onPressedDeleteButton(memo);
+                moveToPreviousPage(context);
+              },
+              icon: const Icon(Icons.delete),
+              label: const Text('')),
+          ElevatedButton.icon(
             onPressed: () {
               onPressedPinnedButton(memo);
               moveToPreviousPage(context);
             },
-            child: Icon(Icons.push_pin),
+            icon: const Icon(Icons.push_pin),
+            label: const Text(''),
           ),
         ],
-        leading: FlatButton(
+        leading: ElevatedButton.icon(
           onPressed: () => moveToPreviousPage(context),
-          child: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
+          label: const Text(''),
         ),
       ),
       body: new Container(

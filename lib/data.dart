@@ -7,6 +7,7 @@ class Data {
   Future<List<String>> getStringListData(String key) async {
     var perfs = await _getInstance();
     var textList = perfs.getStringList(key);
+    if (textList == null) return new List<String>.empty(growable: true);
     debugPrint("getStringListData: " + textList.toString());
     return textList;
   }

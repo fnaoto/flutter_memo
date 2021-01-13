@@ -9,29 +9,33 @@ class MemoModel {
 
   MemoModel({this.pin = false, this.text = ""});
 
-  MemoModel.fromJson(Map<String, dynamic> json)
-      : pin = json['pin'],
-        text = json['text'];
+  MemoModel.fromJson(String jsonString)
+      : pin = json.decode(jsonString)['pin'],
+        text = json.decode(jsonString)['text'];
+
+  String toJson() {
+    return json.encode({"pin": pin, "text": text});
+  }
 }
 
 class Memo {
   String dataKeyName = "memo";
-  List<String> _textList = new List<String>();
-  List<MemoModel> _memoList = new List<MemoModel>();
+  List<String> _textList = new List<String>.empty(growable: true);
+  List<MemoModel> _memoList = new List<MemoModel>.empty(growable: true);
   Data data = new Data();
 
   Future<void> initText() async {
     _textList = await data.getStringListData(dataKeyName);
     debugPrint("initText: " + _textList.toString());
     for (var text in _textList) {
-      _memoList.add(new MemoModel.fromJson(json.decode(text)));
+      _memoList.add(new MemoModel.fromJson(text));
     }
   }
 
   void addText({String text, bool pin}) {
     MemoModel memo = new MemoModel(pin: pin, text: text);
     _memoList.add(memo);
-    _textList.add(memo.toString());
+    _textList.add(memo.toJson());
     data.updateStringListData(dataKeyName, _textList);
   }
 
@@ -68,7 +72,7 @@ class Memo {
       if (_memoList[i].text == memo.text) {
         _memoList[i].text = text;
         _memoList[i].pin = pin;
-        _textList[i] = _memoList[i].toString();
+        _textList[i] = _memoList[i].toJson();
       }
     }
     data.updateStringListData(dataKeyName, _textList);
