@@ -16,7 +16,7 @@ StaggeredGridView createCardGridView(
 }
 
 List<Card> createCardList(List<MemoModel> memoList, Function _onTap) {
-  var _cardList = new List<Card>();
+  List<Card> _cardList = new List<Card>.empty(growable: true);
 
   memoList.forEach((MemoModel memo) {
     _cardList.add(
