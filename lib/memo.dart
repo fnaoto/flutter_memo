@@ -48,7 +48,7 @@ class Memo {
   }
 
   List<MemoModel> getMemoList() {
-    return _memoList;
+    return getPinnedMemoList() + getUnPinnedMemoList();
   }
 
   List<MemoModel> getPinnedMemoList() {

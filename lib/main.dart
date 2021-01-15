@@ -50,15 +50,7 @@ class _MyHomeMemoPageState extends State<MyHomeMemoPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-              child: createCardGridView(_memo.getPinnedMemoList(), _onTap)),
-          Expanded(
-              child: createCardGridView(_memo.getUnPinnedMemoList(), _onTap)),
-        ],
-      ),
+      body: createCardGridView(_memo.getMemoList(), _onTap),
       floatingActionButton: FloatingActionButton(
         onPressed: _addMemo,
         tooltip: 'Add memo',

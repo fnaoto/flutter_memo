@@ -27,25 +27,25 @@ class Editor extends StatelessWidget {
                 onPressedDeleteButton(memo);
                 moveToPreviousPage(context);
               },
-              icon: const Icon(Icons.delete),
+              icon: const Icon(Icons.delete, size: 20),
               label: const Text('')),
           ElevatedButton.icon(
             onPressed: () {
               onPressedPinnedButton(memo);
               moveToPreviousPage(context);
             },
-            icon: const Icon(Icons.push_pin),
+            icon: const Icon(Icons.push_pin, size: 20),
             label: const Text(''),
           ),
         ],
         leading: ElevatedButton.icon(
           onPressed: () => moveToPreviousPage(context),
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, size: 20),
           label: const Text(''),
         ),
       ),
       body: new Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(5.0),
           child: new TextField(
             controller: TextEditingController(text: text),
             style: new TextStyle(color: Colors.black),
