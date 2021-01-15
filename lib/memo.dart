@@ -48,7 +48,7 @@ class Memo {
   }
 
   List<MemoModel> getMemoList() {
-    return _memoList;
+    return getPinnedMemoList() + getUnPinnedMemoList();
   }
 
   List<MemoModel> getPinnedMemoList() {
@@ -79,7 +79,7 @@ class Memo {
   }
 
   void deleteText(MemoModel memo) {
-    _textList.remove(memo.text);
+    _textList.remove(memo.toJson());
     _memoList.remove(memo);
     data.updateStringListData(dataKeyName, _textList);
   }
