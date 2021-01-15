@@ -22,11 +22,19 @@ List<Card> createCardList(List<MemoModel> memoList, Function _onTap) {
     _cardList.add(
       Card(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
-            child: Text(memo.text, maxLines: 10),
-            onTap: () => _onTap(memo: memo),
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              ListTile(
+                trailing: memo.pin ? Icon(Icons.push_pin) : null,
+                title: Text('title'), // FIXME : add method
+                subtitle: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    child: Text(memo.text, maxLines: 10)),
+                onTap: () => _onTap(memo: memo),
+              ),
+            ],
           ),
         ),
       ),
